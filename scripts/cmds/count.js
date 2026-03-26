@@ -1,6 +1,7 @@
 module.exports = {
 	config: {
 		name: "count",
+		aliases: ["c"],
 		version: "1.3",
 		author: "NTKhang",
 		countDown: 5,

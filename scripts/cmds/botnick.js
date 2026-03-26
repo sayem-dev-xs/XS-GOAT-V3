@@ -1,9 +1,9 @@
 module.exports = {
   config: {
     name: "botnick",
-    aliases: ["botname"],
+    aliases: ["sn"],
     version: "1.0",
-    author: "𝐀𝐒𝐈𝐅 𝐱𝟔𝟗",
+    author: "I Don't Know",
     countDown: 5,
     role: 2,
     shortDescription: {

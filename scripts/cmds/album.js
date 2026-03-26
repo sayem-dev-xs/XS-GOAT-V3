@@ -1,180 +1,206 @@
-const fs = require("fs-extra");
 const axios = require("axios");
-const { createReadStream } = require("fs");
-const { join } = require("path");
 
 module.exports = {
   config: {
     name: "album",
-    aliases: ["gallery"],
-    version: "2.0",
-    author: "Vex_kshitiz",
+    version: "1.2",
+    author: "S AY EM",
     countDown: 5,
     role: 0,
-    shortDescription: "album or gallery to save attachments of users",
-    longDescription: "save your videos audios or images with specific title for each attachments.",
-    category: "utility",
-    guide: {
-      en: "To store an attachment: {p}album add {title}\nTo view specific albums content: {p}album audio / {p}album video / {p}album image\nTo view saved attachments: {p}album show {title} ",
-    },
+    shortDescription: "Random video menu",
+    longDescription: "Send random video by category",
+    category: "media",
+    guide: "{pn}"
   },
 
-  onStart: async function ({ api, event, args }) {
-    const senderID = event.senderID;
-    const command = args[0];
-    const title = args.slice(1).join(" ");
+  onStart: async function ({ api, event }) {
 
-    try {
-      const albumPath = `./albums/${senderID}`;
-      const imagePath = `${albumPath}/images`;
-      const videoPath = `${albumPath}/videos`;
-      const audioPath = `${albumPath}/audios`;
+    const page1 = `
+╔═════════════════════╗
+      🎬 𝐕𝐈𝐃𝐄𝐎 𝐌𝐄𝐍𝐔 🎬
+╚═════════════════════╝
 
-      await fs.ensureDir(albumPath);
-      await fs.ensureDir(imagePath);
-      await fs.ensureDir(videoPath);
-      await fs.ensureDir(audioPath);
+╭─❍ 「 𝐏𝐀𝐆𝐄 𝟏 / 𝟐 」
+│
+│ ❶ 💞 𝐋𝐎𝐕𝐄 𝐕𝐈𝐃𝐄𝐎
+│ ❷ 💕 𝐂𝐎𝐔𝐏𝐋𝐄 𝐕𝐈𝐃𝐄𝐎
+│ ❸ 📽 𝐒𝐇𝐎𝐑𝐓 𝐕𝐈𝐃𝐄𝐎
+│ ❹ 😔 𝐒𝐀𝐃 𝐕𝐈𝐃𝐄𝐎
+│ ❺ 📝 𝐒𝐓𝐀𝐓𝐔𝐒 𝐕𝐈𝐃𝐄𝐎
+│ ❻ ✍️ 𝐒𝐇𝐀𝐈𝐑𝐈 𝐕𝐈𝐃𝐄𝐎
+│ ❼ 😻 𝐁𝐀𝐁𝐘 𝐕𝐈𝐃𝐄𝐎
+│
+╰───────────────❍
 
-      if (command === "add" && title && event.messageReply && event.messageReply.attachments && event.messageReply.attachments.length > 0) {
-        const attachment = event.messageReply.attachments[0];
-        const attachmentType = attachment.type.split("/")[0]; 
-        const attachmentURL = attachment.url;
-        let filePath = '';
+📩 Reply Number (1-7)
+➡️ Type "next" for Page 2
+`;
 
-        if (attachmentType === 'photo') {
-          filePath = join(imagePath, `${title}.png`);
-        } else if (attachmentType === 'video') {
-          filePath = join(videoPath, `${title}.mp4`);
-        } else if (attachmentType === 'audio') {
-          filePath = join(audioPath, `${title}.mp3`);
-        } else {
-          api.sendMessage(`Unsupported file type.`, event.threadID, event.messageID);
-          return;
-        }
+    api.sendMessage(page1, event.threadID, (err, info) => {
+      global.GoatBot.onReply.set(info.messageID, {
+        commandName: "album",
+        author: event.senderID,
+        messageID: info.messageID,
+        type: "page1"
+      });
+    }, event.messageID);
+  },
 
-        if (fs.existsSync(filePath)) {
-          api.sendMessage(`A file with the title "${title}"\nalready exists.\nPlease choose another title.`, event.threadID, event.messageID);
-          return;
-        }
+  onReply: async function ({ api, event, Reply }) {
 
-        const response = await axios.get(attachmentURL, { responseType: "stream" });
-        const fileStream = fs.createWriteStream(filePath);
-        response.data.pipe(fileStream);
+    if (event.senderID != Reply.author) return;
 
-        return new Promise((resolve, reject) => {
-          fileStream.on("finish", () => {
-            api.sendMessage(`Attachment saved successfully\nwith title "${title}".`, event.threadID, event.messageID);
-            resolve();
-          });
-          fileStream.on("error", (err) => {
-            reject(err);
-          });
-        });
-      } else if (command === "audio" || command === "video" || command === "image") {
-        const files = await fs.readdir(join(albumPath, command + "s"));
+    const input = event.body.toLowerCase();
 
-        if (files.length === 0) {
-          api.sendMessage(`This album is currently empty.`, event.threadID, event.messageID);
-          return;
-        }
+    if (Reply.type == "page1") {
 
-        let message = "";
-        files.forEach((file, index) => {
-          message += `${index + 1}. ${file.replace(/\.[^/.]+$/, "")}\n`;
-        });
+      if (input == "next") {
 
-        api.sendMessage(message, event.threadID, (err, info) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
+        api.unsendMessage(Reply.messageID);
+
+        const page2 = `
+╔═════════════════════╗
+      🎬 𝐕𝐈𝐃𝐄𝐎 𝐌𝐄𝐍𝐔 🎬
+╚═════════════════════╝
+
+╭─❍ 「 𝐏𝐀𝐆𝐄 𝟐 / 𝟐 」
+│
+│ ❽ 🌸 𝐀𝐍𝐈𝐌𝐄 𝐕𝐈𝐃𝐄𝐎
+│ ❾ ❄ 𝐇𝐔𝐌𝐀𝐈𝐘𝐔𝐍 𝐅𝐎𝐑𝐈𝐃
+│ ❿ 🤲 𝐈𝐒𝐋𝐀𝐌𝐈𝐊 𝐕𝐈𝐃𝐄𝐎
+│
+│ 🔞 𝟏𝟖+ 𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐘
+│
+│ ⓫ 🥵 𝐇𝐎𝐑𝐍𝐘 𝐕𝐈𝐃𝐄𝐎
+│ ⓬ 🔥 𝐇𝐎𝐓 𝐕𝐈𝐃𝐄𝐎
+│ ⓭ 💃 𝐈𝐓𝐄𝐌 𝐕𝐈𝐃𝐄𝐎
+│
+╰───────────────❍
+
+📩 Reply Number (8-13)
+⬅️ Type "back" for Page 1
+`;
+
+        return api.sendMessage(page2, event.threadID, (err, info) => {
           global.GoatBot.onReply.set(info.messageID, {
             commandName: "album",
-            senderID: senderID,
-            messageType: command,
-            files: files,
+            author: event.senderID,
+            messageID: info.messageID,
+            type: "page2"
           });
         });
-      } else if (command === "show" || command === "view") {
-        let found = false;
-        for (let type of ["audio", "video", "image"]) {
-          const filePath = join(albumPath, type + "s", `${title}.${type === "image" ? "png" : type === "video" ? "mp4" : "mp3"}`);
-          if (await fs.pathExists(filePath)) {
-            api.sendMessage({
-              attachment: createReadStream(filePath)
-            }, event.threadID, event.messageID);
-            found = true;
-            break; 
-          }
-        }
-        if (!found) {
-          api.sendMessage(`No media found with the title "${title}".`, event.threadID, event.messageID);
-          return;
-        }
-      } else if (command === "del") {
-        let deleted = false;
-        for (let type of ["audio", "video", "image"]) {
-          const filePath = join(albumPath, type + "s", `${title}.${type === "image" ? "png" : type === "video" ? "mp4" : "mp3"}`);
-          if (await fs.pathExists(filePath)) {
-            await fs.unlink(filePath);
-            api.sendMessage(`"${title}" deleted successfully.`, event.threadID, event.messageID);
-            deleted = true;
-            break; 
-          }
-        }
-        if (!deleted) {
-          api.sendMessage(`No media found with the title "${title}".`, event.threadID, event.messageID);
-          return;
-        }
-      } else if (command === "all") {
-        let message = "";
-        for (let type of ["audio", "video", "image"]) {
-          const files = await fs.readdir(join(albumPath, type + "s"));
-          if (files.length > 0) {
-            message += `[${type}]\n`;
-            files.forEach((file, index) => {
-              message += `${index + 1}. ${file.replace(/\.[^/.]+$/, "")}\n`;
-            });
-          }
-        }
-        if (message === "") {
-          message = "All albums are currently empty.";
-        }
-        api.sendMessage(message, event.threadID, event.messageID);
-      } else {
-        api.sendMessage("Invalid command. Please use the correct syntax.", event.threadID, event.messageID);
       }
-    } catch (err) {
-      console.error(err);
-      api.sendMessage("An error occurred.", event.threadID, event.messageID);
-    }
-  },
 
-  onReply: async function ({ api, event, Reply, args }) {
-    const { commandName, senderID, messageType, files } = Reply;
+      if (["1","2","3","4","5","6","7"].includes(input)) {
 
-    if (commandName !== "album" || senderID !== event.senderID || !messageType || !files) {
-      return;
-    }
+        api.unsendMessage(Reply.messageID)
 
-    const fileIndex = parseInt(args[0], 10);
+        api.setMessageReaction("😘", event.messageID, () => {}, true)
 
-    if (isNaN(fileIndex) || fileIndex <= 0 || fileIndex > files.length) {
-      api.sendMessage({ body: "Invalid input.\nPlease provide a valid number." }, event.threadID, event.messageID);
-      return;
+        return sendVideo(api, event, input);
+      }
+
     }
 
-    const selectedFile = files[fileIndex - 1];
-    const filePath = join("./albums", senderID, messageType + "s", selectedFile);
+    if (Reply.type == "page2") {
 
-    try {
-      const fileStream = fs.createReadStream(filePath);
-      api.sendMessage({ body: `Here is your ${messageType}:`, attachment: fileStream }, event.threadID, event.messageID);
-    } catch (error) {
-      console.error(error);
-      api.sendMessage({ body: "An error occurred while processing the file.\nPlease try again later." }, event.threadID);
-    } finally {
-      global.GoatBot.onReply.delete(event.messageID);
+      if (input == "back") {
+
+        api.unsendMessage(Reply.messageID);
+
+        const page1 = `
+╔═════════════════════╗
+      🎬 𝐕𝐈𝐃𝐄𝐎 𝐌𝐄𝐍𝐔 🎬
+╚═════════════════════╝
+
+╭─❍ 「 𝐏𝐀𝐆𝐄 𝟏 / 𝟐 」
+│
+│ ❶ 💞 𝐋𝐎𝐕𝐄 𝐕𝐈𝐃𝐄𝐎
+│ ❷ 💕 𝐂𝐎𝐔𝐏𝐋𝐄 𝐕𝐈𝐃𝐄𝐎
+│ ❸ 📽 𝐒𝐇𝐎𝐑𝐓 𝐕𝐈𝐃𝐄𝐎
+│ ❹ 😔 𝐒𝐀𝐃 𝐕𝐈𝐃𝐄𝐎
+│ ❺ 📝 𝐒𝐓𝐀𝐓𝐔𝐒 𝐕𝐈𝐃𝐄𝐎
+│ ❻ ✍️ 𝐒𝐇𝐀𝐈𝐑𝐈 𝐕𝐈𝐃𝐄𝐎
+│ ❼ 😻 𝐁𝐀𝐁𝐘 𝐕𝐈𝐃𝐄𝐎
+│
+╰───────────────❍
+
+📩 Reply Number (1-7)
+➡️ Type "next" for Page 2
+`;
+
+        return api.sendMessage(page1, event.threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: "album",
+            author: event.senderID,
+            messageID: info.messageID,
+            type: "page1"
+          });
+        });
+      }
+
+      if (["8","9","10","11","12","13"].includes(input)) {
+
+        api.unsendMessage(Reply.messageID)
+
+        api.setMessageReaction("😘", event.messageID, () => {}, true)
+
+        return sendVideo(api, event, input);
+      }
+
     }
-  },
-}; 
+
+  }
+};
+
+
+async function sendVideo(api, event, choice) {
+
+  const options = {
+    "1": "/video/love",
+    "2": "/video/cpl",
+    "3": "/video/shortvideo",
+    "4": "/video/sadvideo",
+    "5": "/video/status",
+    "6": "/video/shairi",
+    "7": "/video/baby",
+    "8": "/video/anime",
+    "9": "/video/humaiyun",
+    "10": "/video/islam",
+    "11": "/video/horny",
+    "12": "/video/hot",
+    "13": "/video/item"
+  };
+
+  try {
+
+    const apiList = await axios.get(
+      "https://raw.githubusercontent.com/MOHAMMAD-NAYAN-07/Nayan/main/api.json",
+      { timeout: 5000 }
+    );
+
+    const base = apiList.data.api;
+
+    const res = await axios.get(base + options[choice], { timeout: 5000 });
+
+    const videoUrl = res.data.data;
+    const caption = res.data.nayan;
+    const total = res.data.count;
+
+    const stream = await axios({
+      url: videoUrl,
+      method: "GET",
+      responseType: "stream",
+      timeout: 10000
+    });
+
+    api.sendMessage({
+      body: `${caption}\n\n╭─❍ 𝐓𝐎𝐓𝐀𝐋 𝐕𝐈𝐃𝐄𝐎: ${total}`,
+      attachment: stream.data
+    }, event.threadID, null, event.messageID); // reply fix
+
+  } catch (e) {
+    api.sendMessage("❌ Video fetch failed!", event.threadID, null, event.messageID);
+  }
+
+}
