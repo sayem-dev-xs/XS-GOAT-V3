@@ -1,63 +1,38 @@
-<p align="center"><a href="https://www.facebook.com/NOOBS.DEVELOPER.AYAN" target="_blank" rel="noopener noreferrer">
-  <img src="https://i.imgur.com/0e3Z3X9.jpeg" width="50" style="margin-right: 10px;"></a>
-</p>
-<h5 align="center">
-🔹MR.AYAN
-</h5>
+# 🐐 GoatBot - Full Messenger Chat System
 
-## Introduction
-<h1 align="center"><img src="./dashboard/images/logo-non-bg.png" width="22px"> GOATBOT - Bot Chat Messenger</h1>
+![GoatBot Demo](https://i.ibb.co/YT4sC31C/image0.jpg)  
 
-<p align="center">
-	<a href="https://nodejs.org/dist/v11.30.0">
-		<img src="https://img.shields.io/badge/Nodejs%20Support-17.ox-brightgreen.svg?style=flat-square" alt="Nodejs Support v17.ox">
-	</a>
-  <img alt="size" src="https://img.shields.io/github/repo-size/ayankhan/AYAN-BOT.svg?style=flat-square&label=size">
-  <img alt="code-version" src="https://img.shields.io/badge/dynamic/json?color=brightgreen&label=code%20version&prefix=v&query=%24.version&url=https://github.com/ntkhang03/Goat-Bot-V2/raw/main/package.json&style=flat-square">
-  <img alt="visitors" src="https://visitor-badge.laobi.icu/badge?style=flat-square&page_id=ntkhang3.Goat-Bot-V2">
-  <img alt="size" src="https://img.shields.io/badge/license-ATF-green?style=flat-square&color=brightgreen">
-</p>
+GoatBot is a **complete chat system** for Messenger with MongoDB integration, Simsimi fallback, and teach/remove commands. Built with **Node.js, Express, and MongoDB**.
 
-- [📝 **Note**](#-note)
-- [🚧 **Requirement**](#-requirement)
-- [📝 **Tutorial**](#-tutorial)
-- [💡 **How it works?**](#-how-it-works)
-- [🔔 **How to get notification when have new update?**](#-how-to-get-notification-when-have-new-update)
-- [🆙 **How to Update**](#-how-to-update)
-- [🛠️ **How to create new commands**](#️-how-to-create-new-commands)
-- [💭 **Support**](#-support)
-- [📚 **Support Languages in source code**](#-support-languages-in-source-code)
-- [📌 **Common Problems**](#-common-problems)
-- [❌ **DO NOT USE THE ORIGINAL UNDERGRADUATE VERSION**](#-do-not-use-the-original-undergraduate-version)
-- [📸 **Screenshots**](#-screenshots)
-- [✨ **Copyright (C)**](#-copyright-c)
-- [📜 **License**](#-license)
+---
 
-<div align="center">
-			<h3>My Replit Account ->
-			<a href="https://replit.com/@CliffvincentTor" style="color: green;">@Ayanchoudhuri🔥</a>
-				<br>
-	My Facebook Account ->
-	<a href="https://www.facebook.com/NOOBS.DEVELOPER.AYAN" style="color: black;">Ayan🚀</a></h3></div>
+## Features
 
-<img align="center" src="https://i.imgur.com/TsIjePZ.jpeg"/>
+- ✅ Chat with GoatBot
+- ✅ Using to easy
+- ✅ Your owner risk
+- ✅ MongoDB backend for persistent storage
+- ✅ Fallback to Simsimi API if question not found
+- ✅ Normalized input to avoid duplicates
+- ✅ Easy to deploy
 
+---
 
-🔹Mohammad Ayan
+## Installation
 
+```bash
+# Clone repo
+git clone https://github.com/yourusername/goatbot.git
+cd goatbot
 
-# Editing AYAN CHOWDHURY😘
+# Install dependencies
+npm install
 
-# GOATBOT real owner I don’t know
+# Add .env
+echo "PORT=3000" >> .env
+echo "MONGO_URI=your_mongodb_connection_url_here" >> .env
 
-# Everyone run this GOWTBOTV3 for fun
-
-# If there is any error, I will fix it by knocking on Facebook
-
-# https://www.facebook.com/NOOBS.DEVELOPER.AYAN
-
-# I hope you enjoy
-
-# THANK YOU
-
-# 🥀🥀🥀🥀🥀🥀🥀
+# Start server
+npm start
+# or for dev with auto reload
+npm run dev
